@@ -39,16 +39,20 @@
   #editor-wrapper{
     width: 70%;
     height: 400px;
+    margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid gray;
+    background-color: aliceblue;
   }
 
   #main-section{
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
+    height: calc(100vh - 44px);
+    margin-top: -12px;
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(120deg, hsl(180, 100%, 92.5%),hsl(220, 100%, 92.5%));
   }
 </style>
 
