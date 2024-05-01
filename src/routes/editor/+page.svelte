@@ -1,31 +1,33 @@
 <script>
   import '$lib/css/quill.snow.css';
+  import main from '$lib/svelte/main.svelte';
   import { onMount } from "svelte";
+  import { db } from "$lib/js/db.js";
 
   let editor;
+  let quill;
     
-    export let toolbarOptions = [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'font': [] }],
+  export let toolbarOptions = [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'font': [] }],
 
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
+    ['bold', 'italic', 'underline', 'strike', 'clean'],
+    ['blockquote', 'code-block'],
 
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
 
 
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'align': [] }],
-
-      ['clean']                                        // remove formatting button
-    ];
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }],
+  ];
 
   onMount(async () => {
       const { default: Quill } = await import("quill");
-      let quill = new Quill(editor, {
+
+      quill = new Quill(editor, {
         modules: {
           toolbar: toolbarOptions
         },
@@ -33,12 +35,23 @@
         placeholder: ""
       });
   });
+
+  async function saveNote(){
+    db.open().then(() => {
+      return db.notes.add({
+        pinned:false,
+        delta: quill.getContents(),
+        html: quill.root.innerHTML
+      });
+    })
+  }
 </script>
-  
+
+
 <style>
   #editor-wrapper{
     width: 70%;
-    height: 400px;
+    height: 60%;
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
@@ -46,18 +59,28 @@
     background-color: aliceblue;
   }
 
-  #main-section{
-    width: 100%;
-    height: calc(100vh - 44px);
-    margin-top: -12px;
-    display: flex;
-    justify-content: center;
-    background-image: linear-gradient(120deg, hsl(180, 100%, 92.5%),hsl(220, 100%, 92.5%));
+  #save-btn{
+    padding: 8px;
+    margin: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 28px;
+    color: hsl(180, 100%, 95%);
+    background-color: hsl(200, 100%, 50%);
+  }
+  
+  #save-btn:hover{
+      background-color: hsl(200, 100%, 45%);
+  }
+  #save-btn:active{
+      background-color: hsl(200, 100%, 40%);
   }
 </style>
 
-<div id="main-section">
+
+<svelte:component this={main}>
   <div id="editor-wrapper">
     <div bind:this={editor}/>
   </div>
-</div>
+  <button id="save-btn" on:click={saveNote}>Save</button>
+</svelte:component>

@@ -1,13 +1,16 @@
+<script>
+  import main from '$lib/svelte/main.svelte';
+</script>
+
 <style>
-    #main-section{
-        height: calc(100vh - 44px);
-        margin-top: -12px;
-        display:flex;
-        align-items: center;
+    #page-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: inherit;
+        flex-direction: inherit;
         justify-content: space-around;
-        flex-direction: column;
         font-family: Verdana, sans-serif;
-        background-image: linear-gradient(120deg, hsl(180, 100%, 92.5%),hsl(220, 100%, 92.5%));
     }
     #main-text{
         text-align: center;
@@ -17,10 +20,11 @@
         background-clip: text;
     }
     #editor-btn{
+        width: fit-content;
         padding: 12px;
         border-radius: 12px;
         font-size: 36px;
-        color:hsl(180, 100%, 95%);
+        color: hsl(180, 100%, 95%);
         background-color: hsl(200, 100%, 50%);
         text-decoration: none;
     }
@@ -30,10 +34,11 @@
     #editor-btn:active{
         background-color: hsl(200, 100%, 40%);
     }
-
 </style>
 
-<div id="main-section">
-  <div id="main-text">Save notes in the comfort of your browser.</div>
-  <a id="editor-btn" href="/editor">Start Writing</a>
-</div>
+<svelte:component this={main}>
+  <div id="page-wrapper">
+    <div id="main-text">Save notes in the comfort of your browser.</div>
+    <a id="editor-btn" href="/editor">Start Writing</a>
+  </div>
+</svelte:component>

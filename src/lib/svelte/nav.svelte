@@ -13,6 +13,10 @@
         text-decoration: none;
     }
 
+    a:first{
+        margin-left: 20px;
+    }
+
     a:hover{
         background-color: hsl(200, 100%, 85%);
     }
@@ -24,8 +28,7 @@
 </style>
 
 <nav id="navbar">
-    <a href="/">MiniDoc</a>
+    <a href="/">Memento</a>
     <a href="/editor">Editor</a>
     <a href="/notes">Notes</a>
 </nav>
-<slot/>
