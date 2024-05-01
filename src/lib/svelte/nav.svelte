@@ -13,10 +13,6 @@
         text-decoration: none;
     }
 
-    a:first{
-        margin-left: 20px;
-    }
-
     a:hover{
         background-color: hsl(200, 100%, 85%);
     }

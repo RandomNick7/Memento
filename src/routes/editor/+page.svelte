@@ -1,5 +1,6 @@
 <script>
   import '$lib/css/quill.snow.css';
+  import '$lib/css/editor.css';
   import main from '$lib/svelte/main.svelte';
   import { onMount } from "svelte";
   import { db } from "$lib/js/db.js";
@@ -46,37 +47,6 @@
     })
   }
 </script>
-
-
-<style>
-  #editor-wrapper{
-    width: 70%;
-    height: 60%;
-    margin-top: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid gray;
-    background-color: aliceblue;
-  }
-
-  #save-btn{
-    padding: 8px;
-    margin: 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 28px;
-    color: hsl(180, 100%, 95%);
-    background-color: hsl(200, 100%, 50%);
-  }
-  
-  #save-btn:hover{
-      background-color: hsl(200, 100%, 45%);
-  }
-  #save-btn:active{
-      background-color: hsl(200, 100%, 40%);
-  }
-</style>
-
 
 <svelte:component this={main}>
   <div id="editor-wrapper">

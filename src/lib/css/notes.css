@@ -1,0 +1,75 @@
+#notes-wrapper{
+    width: 80%;
+    margin-top: 20px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 300px 300px 300px 300px;
+    grid-template-rows: auto;
+    gap: 20px 20px;
+}
+
+.note{
+    width: 300px;
+    height: 200px;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 20px;
+    position: relative;
+    background-color: aliceblue;
+    word-wrap: break-word;
+    break-inside: avoid;
+    overflow: hidden;
+}
+
+.note::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -15px;
+    right: -15px;
+    box-shadow: inset aliceblue 0 -24px 16px;
+}
+
+.note > :global(p){
+    margin: 0;
+}
+
+.controls{
+    display: flex;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: hsl(220, 100%, 90%);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.controls > *{
+    padding: 4px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    margin: 2px;
+}
+
+.controls > *:hover{
+    background-color: hsl(220, 100%, 85%);
+    cursor: pointer;
+}
+
+.controls > * > img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#no-notes-text{
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, 0);
+    color: hsl(200, 100%, 60%);
+    font-size: 32px;
+    font-family: Verdana, sans-serif;
+}
