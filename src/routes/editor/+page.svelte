@@ -44,8 +44,7 @@
 
     if(textID > 0){
       let dbNoteData = await db.notes.where('id').equals(textID).toArray();
-      quill.setContents(dbNoteData[0].delta)
-      console.log(dbNoteData[0].delta);
+      quill.setContents(dbNoteData[0].delta);
     }
   });
 
@@ -54,7 +53,7 @@
       return db.notes.add({
         pinned: false,
         delta: quill.getContents(),
-        html: quill.root.innerHTML
+        html: quill.getSemanticHTML()
       });
     })
   }
