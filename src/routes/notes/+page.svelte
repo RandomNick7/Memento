@@ -9,6 +9,20 @@
     () => db.notes.toArray()
   );
 
+  function moveToTop(){
+    let target = this.parentElement.parentElement;
+    let img = this.children[0];
+    let currentOrder = target.style.order;
+    let defaultOrder = target.dataset.id;
+    if(currentOrder >= 0){
+      target.style.order = -1;
+      img.src = '/img/pin_dark.svg';
+    }else{
+      target.style.order = defaultOrder;
+      img.src = '/img/pin.svg';
+    }
+  }
+
 </script>
 
 <svelte:component this={main}>
@@ -16,17 +30,17 @@
     {#if $notes}
       {#if $notes.length > 0}
         {#each $notes as note (note.id)}
-          <div class="note">
+          <div class="note" data-id={note.id} style="order:{note.id}">
             <div class="controls">
-              <div>
+              <button on:click={moveToTop}>
                 <img alt="Pin" src="/img/pin.svg">
-              </div>
-              <div>
+              </button>
+              <button>
                 <img alt="Edit" src="/img/edit_pencil.svg">
-              </div>
-              <div>
+              </button>
+              <button>
                 <img alt="Delete" src="/img/trash_bin.svg">
-              </div>
+              </button>
             </div>
             {@html note.html}
           </div>

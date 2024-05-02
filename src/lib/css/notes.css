@@ -49,8 +49,10 @@
     padding: 4px;
     width: 28px;
     height: 28px;
+    border: none;
     border-radius: 8px;
     margin: 2px;
+    background-color: inherit;
 }
 
 .controls > *:hover{
