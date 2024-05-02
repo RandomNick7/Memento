@@ -4,6 +4,7 @@
   import main from '$lib/svelte/main.svelte';
   import { onMount } from "svelte";
   import { db } from "$lib/js/db.js";
+  import { targetID } from "$lib/js/stores.js";
 
   let editor;
   let quill;
@@ -26,15 +27,26 @@
   ];
 
   onMount(async () => {
-      const { default: Quill } = await import("quill");
+    const { default: Quill } = await import("quill");
 
-      quill = new Quill(editor, {
-        modules: {
-          toolbar: toolbarOptions
-        },
-        theme: "snow",
-        placeholder: ""
-      });
+    quill = new Quill(editor, {
+      modules: {
+        toolbar: toolbarOptions
+      },
+      theme: "snow",
+      placeholder: ""
+    });
+
+    let textID 
+    targetID.subscribe((value) => {
+      textID = value;
+    });
+
+    if(textID > 0){
+      let dbNoteData = await db.notes.where('id').equals(textID).toArray();
+      quill.setContents(dbNoteData[0].delta)
+      console.log(dbNoteData[0].delta);
+    }
   });
 
   async function saveNote(){

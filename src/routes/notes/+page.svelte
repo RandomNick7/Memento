@@ -1,9 +1,10 @@
 <script>
-  import '$lib/css/quill.snow.css';
-  import '$lib/css/notes.css';
-  import main from '$lib/svelte/main.svelte';
+  import "$lib/css/quill.snow.css";
+  import "$lib/css/notes.css";
+  import main from "$lib/svelte/main.svelte";
   import { db } from "$lib/js/db";
   import { liveQuery } from "dexie";
+  import { targetID } from "$lib/js/stores.js";
 
   let notes = liveQuery(
     () => db.notes.toArray()
@@ -21,6 +22,11 @@
       target.style.order = defaultOrder;
       img.src = '/img/pin.svg';
     }
+  }
+
+  function editNote(){
+    let target = this.parentElement.parentElement;
+    targetID.set(parseInt(target.dataset.id));
   }
 
   function deleteNote(){
@@ -44,7 +50,7 @@
               <button on:click={pinToTop}>
                 <img alt="Pin" src="/img/pin.svg">
               </button>
-              <button>
+              <button on:click={editNote}>
                 <img alt="Edit" src="/img/edit_pencil.svg">
               </button>
               <button on:click={deleteNote}>

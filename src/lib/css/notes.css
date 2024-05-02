@@ -16,6 +16,7 @@
     border-radius: 20px;
     position: relative;
     background-color: aliceblue;
+    font-family: sans-serif;
     word-wrap: break-word;
     break-inside: avoid;
     overflow: hidden;
