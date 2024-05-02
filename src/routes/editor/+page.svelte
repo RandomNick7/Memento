@@ -40,7 +40,7 @@
   async function saveNote(){
     db.open().then(() => {
       return db.notes.add({
-        pinned:false,
+        pinned: false,
         delta: quill.getContents(),
         html: quill.root.innerHTML
       });

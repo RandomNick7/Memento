@@ -9,7 +9,7 @@
     () => db.notes.toArray()
   );
 
-  function moveToTop(){
+  function pinToTop(){
     let target = this.parentElement.parentElement;
     let img = this.children[0];
     let currentOrder = target.style.order;
@@ -23,6 +23,15 @@
     }
   }
 
+  function deleteNote(){
+    async function deleteEntry(id){
+      db.notes.where('id').equals(id).delete();
+    }
+
+    let target = this.parentElement.parentElement;
+    deleteEntry(parseInt(target.dataset.id));
+  }
+
 </script>
 
 <svelte:component this={main}>
@@ -32,13 +41,13 @@
         {#each $notes as note (note.id)}
           <div class="note" data-id={note.id} style="order:{note.id}">
             <div class="controls">
-              <button on:click={moveToTop}>
+              <button on:click={pinToTop}>
                 <img alt="Pin" src="/img/pin.svg">
               </button>
               <button>
                 <img alt="Edit" src="/img/edit_pencil.svg">
               </button>
-              <button>
+              <button on:click={deleteNote}>
                 <img alt="Delete" src="/img/trash_bin.svg">
               </button>
             </div>
