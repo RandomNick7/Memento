@@ -103,9 +103,9 @@
               <button on:click={pinToTop}>
                 <img alt="Pin" src="/img/pin.svg">
               </button>
-              <button on:click={editNote}>
+              <a href="/editor" on:click={editNote}>
                 <img alt="Edit" src="/img/edit_pencil.svg">
-              </button>
+              </a>
               <button on:click={deleteNote}>
                 <img alt="Delete" src="/img/trash_bin.svg">
               </button>

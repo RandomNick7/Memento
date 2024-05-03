@@ -6,9 +6,9 @@
   import { db } from "$lib/js/db.js";
   import { targetID, darkTheme } from "$lib/js/stores.js";
 
-  let darkMode, classList
+  let textID;
+  let darkMode, classList;
   let quill, editor;
-
 
   export let toolbarOptions = [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -43,14 +43,17 @@
       placeholder: ""
     });
 
-    let textID 
     targetID.subscribe((value) => {
       textID = value;
     });
 
     if(textID > 0){
       let dbNoteData = await db.notes.where('id').equals(textID).toArray();
-      quill.setContents(dbNoteData[0].delta);
+      if(dbNoteData.length > 0){
+        quill.setContents(dbNoteData[0].delta);
+      }else{
+        targetID.set(0);
+      }
     }
   });
 
@@ -63,19 +66,32 @@
   }
 
   async function saveNote(){
-    db.open().then(() => {
-      return db.notes.add({
-        pinned: false,
-        delta: quill.getContents(),
-        html: quill.getSemanticHTML()
-      });
-    })
+      db.open().then(() => {
+        if(textID > 0){
+          return db.notes.update(textID, {
+            delta: quill.getContents(),
+            html: quill.getSemanticHTML()
+          });
+        }else{
+          return db.notes.add({
+            pinned: false,
+            delta: quill.getContents(),
+            html: quill.getSemanticHTML()
+          });
+        }
+      }).then(() => {
+        quill.deleteText(0,quill.getLength());
+        targetID.set(0);
+      })
   }
 </script>
 
 <svelte:component this={main}>
   <div class={classList}>
     <div bind:this={editor}/>
+  </div>
+  <div class="notif">
+    Saved successfully!
   </div>
   <button id="save-btn" on:click={saveNote}>Save</button>
 </svelte:component>

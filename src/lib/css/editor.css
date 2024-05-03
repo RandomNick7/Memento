@@ -2,11 +2,19 @@
     width: 70%;
     height: 500px;
     max-height: 60vh;
-    margin-top: 20px;
+    margin: 20px 0;
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
     border: 1px solid gray;
     background-color: aliceblue;
+}
+
+.notif{
+    color: hsl(140, 100%, 40%);
+    font-size: 24px;
+    font-family: 'Trebuchet MS', sans-serif;
+    opacity: 0;
 }
 
 #save-btn{
