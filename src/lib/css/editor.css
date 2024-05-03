@@ -1,7 +1,7 @@
-
-#editor-wrapper{
+.editor-wrapper{
     width: 70%;
-    height: 60%;
+    height: 500px;
+    max-height: 60vh;
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
@@ -24,4 +24,13 @@
 }
 #save-btn:active{
     background-color: hsl(200, 100%, 40%);
+}
+
+.editor-wrapper.dark-mode{
+    background-color: hsl(200, 10%, 65%);
+}
+
+.dark-mode #save-btn{
+    color: hsl(190, 100%, 45%);
+    background-color: hsl(200, 100%, 25%);
 }

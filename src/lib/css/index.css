@@ -1,6 +1,6 @@
-#page-wrapper {
+.page-wrapper {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 44px);
     display: flex;
     align-items: inherit;
     flex-direction: inherit;
@@ -32,4 +32,17 @@
 
 #editor-btn:active{
     background-color: hsl(200, 100%, 40%);
+}
+
+.page-wrapper.dark-mode #main-text{
+    background-image: linear-gradient(60deg, hsl(200, 100%, 25%),hsl(200, 100%, 55%));
+}
+
+.page-wrapper.dark-mode #editor-btn{
+    color: hsl(190, 100%, 45%);
+    background-color: hsl(200, 100%, 25%);
+}
+
+.page-wrapper #editor-btn:hover{
+    background-color: hsl(200, 100%, 30%);
 }

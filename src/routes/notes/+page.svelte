@@ -4,11 +4,17 @@
   import main from "$lib/svelte/main.svelte";
   import { db } from "$lib/js/db";
   import { liveQuery } from "dexie";
-  import { targetID } from "$lib/js/stores.js";
+  import { targetID, darkTheme } from "$lib/js/stores.js";
 
   let notes = liveQuery(
     () => db.notes.toArray()
   );
+
+  let darkMode, classList
+  $: $darkTheme, changeTheme()
+  darkTheme.subscribe((value) => {
+    darkMode = value;
+  });
 
   function pinToTop(){
     let target = this.parentElement.parentElement;
@@ -38,6 +44,13 @@
     deleteEntry(parseInt(target.dataset.id));
   }
 
+  function changeTheme(){
+    if(darkMode == true){
+      classList = "notes-wrapper dark-mode";
+    }else{
+      classList = "notes-wrapper";
+    }
+  }
 </script>
 
 <style>
@@ -81,7 +94,7 @@
 </style>
 
 <svelte:component this={main}>
-  <div id="notes-wrapper">
+  <div class={classList}>
     {#if $notes}
       {#if $notes.length > 0}
         {#each $notes as note (note.id)}

@@ -1,30 +1,34 @@
-<style>
-    nav{
-        margin-bottom: 12px;
-        display: flex;
-        background-color: hsl(200, 100%, 90%);
-        color: hsl(200, 100%, 40%);
-        font-size: 24px;
-        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', sans-serif;
-    }
+<script>
+  import "$lib/css/navbar.css"
+  import { darkTheme } from '$lib/js/stores.js';
 
-    a{
-        padding: 8px;
-        text-decoration: none;
+  let darkMode, classList, iconSrc
+  
+  $: $darkTheme, changeTheme()
+  darkTheme.subscribe((value) => {
+    darkMode = value;
+  });
+  
+  function toggleTheme(){
+    darkTheme.set(!darkMode);
+  }
+  
+  function changeTheme(){
+    if(darkMode == true){
+      iconSrc = "/img/sun.svg"
+      classList = "dark-mode";
+    }else{
+      classList = "";
+      iconSrc = "/img/moon.svg"
     }
+  }
+</script>
 
-    a:hover{
-        background-color: hsl(200, 100%, 85%);
-    }
-
-    a:active{
-        color: hsl(200, 100%, 40%);
-        background-color: hsl(200, 100%, 80%);
-    }
-</style>
-
-<nav id="navbar">
+<nav class={classList}>
     <a href="/">Memento</a>
     <a href="/editor">Editor</a>
     <a href="/notes">Notes</a>
+    <button on:click={toggleTheme}>
+        <img alt="Theme" src={iconSrc}>
+    </button>
 </nav>

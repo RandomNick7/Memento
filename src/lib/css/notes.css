@@ -1,9 +1,9 @@
-#notes-wrapper{
+.notes-wrapper{
     width: 80%;
     margin-top: 20px;
     display: grid;
     justify-content: center;
-    grid-template-columns: 300px 300px 300px 300px;
+    grid-template-columns: repeat(4,300px);
     grid-template-rows: auto;
     gap: 20px 20px;
 }
@@ -30,6 +30,11 @@
     left: -15px;
     right: -15px;
     box-shadow: inset aliceblue 0 -24px 16px;
+    transition: box-shadow 0.3s;
+}
+
+.note:hover .controls{
+    opacity: 1;
 }
 
 .note > :global(p){
@@ -38,15 +43,17 @@
 
 .controls{
     display: flex;
+    opacity: 0;
     position: absolute;
     bottom: 8px;
     right: 8px;
     background-color: hsl(220, 100%, 90%);
     border-radius: 8px;
     z-index: 1;
+    transition: opacity 0.3s;
 }
 
-.controls > *{
+.controls > button{
     padding: 4px;
     width: 28px;
     height: 28px;
@@ -56,12 +63,12 @@
     background-color: inherit;
 }
 
-.controls > *:hover{
+.controls > button:hover{
     background-color: hsl(220, 100%, 85%);
     cursor: pointer;
 }
 
-.controls > * > img{
+.controls > button > img{
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -75,4 +82,20 @@
     color: hsl(200, 100%, 60%);
     font-size: 32px;
     font-family: Verdana, sans-serif;
+}
+
+.notes-wrapper.dark-mode .note{
+    background-color: hsl(200, 10%, 65%);
+}
+
+.notes-wrapper.dark-mode .note::after{
+    box-shadow: inset hsl(200, 10%, 65%) 0 -24px 16px;
+}
+
+.notes-wrapper.dark-mode .controls{
+    background-color: hsl(210, 60%, 70%);
+}
+
+.notes-wrapper.dark-mode .controls > *:hover{
+    background-color: hsl(210, 60%, 60%);
 }
