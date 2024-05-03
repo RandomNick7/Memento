@@ -3,6 +3,14 @@
     transition: background-color 0.3s, color 0.3s;
 }
 
+a{
+    text-decoration: none;
+}
+
+a:visited { 
+    text-decoration: none;
+}
+
 body{
     margin: 0;
 }
