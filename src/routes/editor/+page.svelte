@@ -90,8 +90,5 @@
   <div class={classList}>
     <div bind:this={editor}/>
   </div>
-  <div class="notif">
-    Saved successfully!
-  </div>
   <button id="save-btn" on:click={saveNote}>Save</button>
 </svelte:component>
