@@ -9,25 +9,32 @@ nav{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', sans-serif;
 }
 
-nav a{
+nav a, nav .nav-right-side div{
     padding: 8px;
+    cursor: pointer;
 }
 
-nav a:hover{
+nav a:hover, nav .nav-right-side div:hover{
     background-color: hsl(200, 100%, 85%);
 }
 
-nav a:active{
+nav a:active, nav .nav-right-side div:active{
     color: hsl(200, 100%, 40%);
     background-color: hsl(200, 100%, 80%);
+}
+
+nav .nav-right-side{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 nav button{
     width: 36px;
     height: 36px;
     border: none;
+    margin: 0 4px;
     border-radius: 4px;
-    margin: 0 4px 0 auto;
     background-color: hsl(200, 100%, 80%);
 }
 
@@ -41,15 +48,15 @@ nav.dark-mode{
     background-color: hsl(200, 100%, 15%);
 }
 
-nav.dark-mode a{
+nav.dark-mode a, nav.dark-mode .nav-right-side div{
   color: hsl(200, 100%, 60%);
 }
 
-nav.dark-mode a:hover{
+nav.dark-mode a:hover, nav.dark-mode .nav-right-side div:hover{
     background-color: hsl(200, 100%, 20%);
 }
 
-nav.dark-mode a:active{
+nav.dark-mode a:active, nav.dark-mode .nav-right-side div:active{
     background-color: hsl(200, 100%, 25%);
 }
 
