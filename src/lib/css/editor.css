@@ -16,6 +16,7 @@
     border: none;
     border-radius: 8px;
     font-size: 28px;
+    font-family: 'Trebuchet MS', sans-serif;
     color: hsl(180, 100%, 95%);
     background-color: hsl(200, 100%, 50%);
 }

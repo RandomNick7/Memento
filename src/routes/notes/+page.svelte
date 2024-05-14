@@ -10,12 +10,6 @@
     () => db.notes.toArray()
   );
 
-  let darkMode, classList
-  $: $darkTheme, changeTheme()
-  darkTheme.subscribe((value) => {
-    darkMode = value;
-  });
-
   function pinToTop(){
     let target = this.parentElement.parentElement;
     let targetID = parseInt(target.dataset.id);
@@ -36,14 +30,6 @@
 
     let target = this.parentElement.parentElement;
     deleteEntry(parseInt(target.dataset.id));
-  }
-
-  function changeTheme(){
-    if(darkMode == true){
-      classList = "notes-wrapper dark-mode";
-    }else{
-      classList = "notes-wrapper";
-    }
   }
 </script>
 
@@ -88,7 +74,7 @@
 </style>
 
 <svelte:component this={main}>
-  <div class={classList}>
+  <div class={$darkTheme? "notes-wrapper dark-mode": "notes-wrapper"}>
     {#if $notes}
       {#if $notes.length > 0}
         {#each $notes as note}

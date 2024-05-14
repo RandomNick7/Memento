@@ -7,7 +7,6 @@
   import { targetID, darkTheme } from "$lib/js/stores.js";
 
   let textID;
-  let darkMode, classList;
   let quill, editor;
 
   export let toolbarOptions = [
@@ -26,11 +25,6 @@
     [{ 'color': [] }, { 'background': [] }],
     [{ 'align': [] }],
   ];
-
-  $: $darkTheme, changeTheme()
-  darkTheme.subscribe((value) => {
-    darkMode = value;
-  });
 
   onMount(async () => {
     const { default: Quill } = await import("quill");
@@ -57,14 +51,6 @@
     }
   });
 
-  function changeTheme(){
-    if(darkMode == true){
-      classList = "editor-wrapper dark-mode";
-    }else{
-      classList = "editor-wrapper";
-    }
-  }
-
   async function saveNote(){
       db.open().then(() => {
         if(textID > 0){
@@ -87,8 +73,8 @@
 </script>
 
 <svelte:component this={main}>
-  <div class={classList}>
+  <div class={$darkTheme? "editor-wrapper dark-mode":"editor-wrapper"}>
     <div bind:this={editor}/>
   </div>
-  <button id="save-btn" on:click={saveNote}>Save</button>
+  <a href="/notes" id="save-btn" on:click={saveNote}>Save</a>
 </svelte:component>

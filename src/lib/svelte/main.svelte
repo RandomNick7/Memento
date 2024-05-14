@@ -1,19 +1,5 @@
 <script>
   import { darkTheme } from '$lib/js/stores.js';
-
-  let darkMode, classList
-  $: $darkTheme, changeTheme()
-  darkTheme.subscribe((value) => {
-    darkMode = value;
-  });
-  
-  function changeTheme(){
-    if(darkMode == true){
-      classList = "main-section dark-mode";
-    }else{
-      classList = "main-section";
-    }
-  }
 </script>
 
 <style>
@@ -33,6 +19,6 @@
   }
 </style>
 
-<div class={classList}>
+<div class={$darkTheme? "main-section dark-mode": "main-section"}>
     <slot/>
 </div>
