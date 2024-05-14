@@ -18,16 +18,10 @@
 
   function pinToTop(){
     let target = this.parentElement.parentElement;
-    let img = this.children[0];
-    let currentOrder = target.style.order;
-    let defaultOrder = target.dataset.id;
-    if(currentOrder >= 0){
-      target.style.order = -1;
-      img.src = '/img/pin_dark.svg';
-    }else{
-      target.style.order = defaultOrder;
-      img.src = '/img/pin.svg';
-    }
+    let targetID = parseInt(target.dataset.id);
+    db.notes.get(targetID).then((result) => {
+      db.notes.update(targetID, {pinned: !result.pinned})
+    });
   }
 
   function editNote(){
@@ -97,11 +91,11 @@
   <div class={classList}>
     {#if $notes}
       {#if $notes.length > 0}
-        {#each $notes as note (note.id)}
-          <div class="note" data-id={note.id} style="order:{note.id}">
+        {#each $notes as note}
+          <div class="note" data-id={note.id} style="order:{note.pinned? -1 : note.id}">
             <div class="controls">
               <button on:click={pinToTop}>
-                <img alt="Pin" src="/img/pin.svg">
+                <img alt="Pin" src="{note.pinned? "/img/pin_dark.svg" : "/img/pin.svg"}">
               </button>
               <a href="/editor" on:click={editNote}>
                 <img alt="Edit" src="/img/edit_pencil.svg">
