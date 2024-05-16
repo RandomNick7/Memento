@@ -5,7 +5,6 @@
   import { db } from "$lib/js/db";
   import { liveQuery } from "dexie";
   import { darkTheme } from "$lib/js/stores.js";
-  import jsCookie from "js-cookie";
 
   let notes = liveQuery(
     () => db.notes.toArray()

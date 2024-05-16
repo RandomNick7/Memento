@@ -1,3 +1,16 @@
+.upload-all{
+    padding: 6px;
+    border: 2px solid hsl(200, 75%, 70%);
+    margin: 24px 0;
+    border-radius: 8px;
+    color: hsl(200, 100%, 40%);
+    background-color: hsl(200, 100%, 85%);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+}
+
 .notes-wrapper{
     width: 80%;
     margin-top: 20px;
@@ -98,4 +111,9 @@
 
 .notes-wrapper.dark-mode .controls > *:hover{
     background-color: hsl(210, 60%, 60%);
+}
+
+.upload-all.dark-mode{
+    border: 2px solid hsl(200, 30%, 20%);
+    background-color: hsl(200, 75%, 20%);
 }

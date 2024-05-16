@@ -4,11 +4,24 @@
   import main from "$lib/svelte/main.svelte";
   import { db } from "$lib/js/db";
   import { liveQuery } from "dexie";
-  import { targetID, darkTheme } from "$lib/js/stores.js";
+  import { get } from "svelte/store";
+  import { targetID, darkTheme, loggedIn } from "$lib/js/stores.js";
+    import jsCookie from "js-cookie";
+    import Nav from "../../lib/svelte/nav.svelte";
 
   let notes = liveQuery(
     () => db.notes.toArray()
   );
+
+  function parseJWT(token){
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  }
 
   function pinToTop(){
     let target = this.parentElement.parentElement;
@@ -30,6 +43,41 @@
 
     let target = this.parentElement.parentElement;
     deleteEntry(parseInt(target.dataset.id));
+  }
+
+  async function uploadNote(){
+    let target = this.parentElement.parentElement;
+    let db_entry = await db.notes.get(parseInt(target.dataset.id));
+    let uid = parseJWT(jsCookie.get("MementoJWT"))["id"]
+    let url = "https://randomnickname.pythonanywhere.com/memento"
+
+    await fetch(url, {
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        "uid":uid,
+        "entries":JSON.stringify([db_entry])
+      })
+    })
+  }
+
+  async function uploadAllNotes(){
+    let db_entries = await db.notes.toArray();
+    let uid = parseJWT(jsCookie.get("MementoJWT"))["id"]
+    let url = "https://randomnickname.pythonanywhere.com/memento"
+
+    await fetch(url, {
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        "uid":uid,
+        "entries":JSON.stringify(db_entries)
+      })
+    })
   }
 </script>
 
@@ -74,12 +122,26 @@
 </style>
 
 <svelte:component this={main}>
-  <div class={$darkTheme? "notes-wrapper dark-mode": "notes-wrapper"}>
+  {#if $notes}
+    {#if $notes.length > 0}
+      {#if $loggedIn}
+        <a href="/backup" on:click={uploadAllNotes} class={$darkTheme? "upload-all dark-mode" : "upload-all"}>
+          Upload all notes
+        </a>
+      {/if}
+    {/if}
+  {/if}
+  <div class={$darkTheme? "notes-wrapper dark-mode" : "notes-wrapper"}>
     {#if $notes}
       {#if $notes.length > 0}
         {#each $notes as note}
           <div class="note" data-id={note.id} style="order:{note.pinned? -1 : note.id}">
             <div class="controls">
+              {#if $loggedIn}
+              <button on:click={uploadNote}>
+                <img alt="Upload" src="/img/cloud_up.svg">
+              </button>
+              {/if}
               <button on:click={pinToTop}>
                 <img alt="Pin" src="{note.pinned? "/img/pin_dark.svg" : "/img/pin.svg"}">
               </button>

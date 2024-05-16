@@ -1,6 +1,6 @@
 <script>
   import "$lib/css/navbar.css"
-  import { darkTheme } from '$lib/js/stores.js';
+  import { darkTheme, loggedIn } from '$lib/js/stores.js';
   import jsCookie from "js-cookie";
   import { onMount } from "svelte";
 
@@ -20,7 +20,7 @@
     }
   }
 
-  function parseJwt(token){
+  function parseJWT(token){
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
@@ -28,11 +28,6 @@
     }).join(''));
 
     return JSON.parse(jsonPayload);
-  }
-
-  function expireCookie(){
-    jsCookie.remove("MementoJWT", {sameSite: "lax"});
-    cookieCheck();
   }
 
   onMount(async () => {
@@ -50,8 +45,8 @@
   async function signIn(){
     let user_field = document.getElementById("username").value;
     let pass_field = document.getElementById("password").value;
-    let url = "http://randomnickname.pythonanywhere.com/" + (panel_state == 1? "sign_up" : "login")
-    
+    let url = "https://randomnickname.pythonanywhere.com/" + (panel_state == 1? "sign_up" : "login")
+
     let res = await fetch(url, {
       method: "POST",
       headers:{
@@ -65,11 +60,12 @@
     let token = await res.json();
 
     if(token["token"]){
-      let expiration_time = Date.parse(parseJwt(token["token"])["exp"]);
+      let expiration_time = Date.parse(parseJWT(token["token"])["exp"]);
       jsCookie.set("MementoJWT", token["token"], {expires: expiration_time, sameSite: "lax"});
 
       let delta_time = expiration_time - Date.parse((new Date()).toUTCString());
-      setTimeout(expireCookie, delta_time);
+      setTimeout(signOut, delta_time);
+      loggedIn.set(true);
       cookieCheck();
     }
     panel_state *= -1;
@@ -77,6 +73,7 @@
 
   function signOut(){
     jsCookie.remove("MementoJWT", {sameSite: "lax"});
+    loggedIn.set(false);
     cookieCheck();
   }
 </script>
