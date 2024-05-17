@@ -137,9 +137,9 @@
           <div class="note" data-id={note.id} style="order:{note.pinned? -1 : note.id}">
             <div class="controls">
               {#if $loggedIn}
-              <button on:click={uploadNote}>
+              <a href="/backup" on:click={uploadNote}>
                 <img alt="Upload" src="/img/cloud_up.svg">
-              </button>
+              </a>
               {/if}
               <button on:click={pinToTop}>
                 <img alt="Pin" src="{note.pinned? "/img/pin_dark.svg" : "/img/pin.svg"}">

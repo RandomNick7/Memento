@@ -82,9 +82,9 @@
       {#each notes as note, i}
         <div class="note" data-id={i}>
           <div class="controls">
-            <button on:click={saveToDB}>
+            <a href="/notes" on:click={saveToDB}>
               <img alt="Download" src="/img/cloud_down.svg">
-            </button>
+            </a>
           </div>
           {@html note.html}
         </div>
