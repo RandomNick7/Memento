@@ -11,6 +11,13 @@
     cursor: pointer;
 }
 
+#backup-header{
+    margin-top: 16px;
+    color: hsl(200, 100%, 60%);
+    font-size: 36px;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
 .notes-wrapper{
     width: 80%;
     margin-top: 20px;

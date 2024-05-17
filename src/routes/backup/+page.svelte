@@ -3,20 +3,35 @@
   import "$lib/css/notes.css";
   import main from "$lib/svelte/main.svelte";
   import { db } from "$lib/js/db";
-  import { liveQuery } from "dexie";
   import { darkTheme } from "$lib/js/stores.js";
+  import { onMount } from "svelte";
 
-  let notes = liveQuery(
-    () => db.notes.toArray()
-  );
+  let url = "https://randomnickname.pythonanywhere.com/memento/1"
+  $: notes = []
 
-  function deleteNote(){
-    async function deleteEntry(id){
-      db.notes.where('id').equals(id).delete();
-    }
+  onMount(async () => {
+    let res = await fetch(url, {
+      method: "GET",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    let response = await res.json();
+    notes = response["notes"]
+  })
 
+  function saveToDB(){
     let target = this.parentElement.parentElement;
-    deleteEntry(parseInt(target.dataset.id));
+    let targetID = parseInt(target.dataset.id);
+    let noteCopy = notes[targetID];
+
+    db.open().then(() => {
+      return db.notes.add({
+        pinned: noteCopy["pinned"],
+        delta: noteCopy["delta"],
+        html: noteCopy["html"]
+      });
+    })
   }
 </script>
 
@@ -61,25 +76,21 @@
 </style>
 
 <svelte:component this={main}>
+  <div id="backup-header">Backed up notes:</div>
   <div class={$darkTheme? "notes-wrapper dark-mode": "notes-wrapper"}>
-    {#if $notes}
-      {#if $notes.length > 0}
-        {#each $notes as note}
-          <div class="note" data-id={note.id} style="order:{note.pinned? -1 : note.id}">
-            <div class="controls">
-              <button on:click={deleteNote}>
-                <img alt="Delete" src="/img/trash_bin.svg">
-              </button>
-              <button>
-                
-              </button>
-            </div>
-            {@html note.html}
+    {#if notes.length > 0}
+      {#each notes as note, i}
+        <div class="note" data-id={i}>
+          <div class="controls">
+            <button on:click={saveToDB}>
+              <img alt="Download" src="/img/cloud_down.svg">
+            </button>
           </div>
-        {/each}
-      {:else}
-        <div id="no-notes-text">Nothing saved yet...</div>
-      {/if}
+          {@html note.html}
+        </div>
+      {/each}
+    {:else}
+      <div id="no-notes-text">Nothing saved yet...</div>
     {/if}
   </div>
 </svelte:component>

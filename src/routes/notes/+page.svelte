@@ -6,12 +6,13 @@
   import { liveQuery } from "dexie";
   import { get } from "svelte/store";
   import { targetID, darkTheme, loggedIn } from "$lib/js/stores.js";
-    import jsCookie from "js-cookie";
-    import Nav from "../../lib/svelte/nav.svelte";
+  import jsCookie from "js-cookie";
+  import Nav from "../../lib/svelte/nav.svelte";
 
   let notes = liveQuery(
     () => db.notes.toArray()
   );
+  let url = "https://randomnickname.pythonanywhere.com/memento"
 
   function parseJWT(token){
     var base64Url = token.split('.')[1];
@@ -49,7 +50,6 @@
     let target = this.parentElement.parentElement;
     let db_entry = await db.notes.get(parseInt(target.dataset.id));
     let uid = parseJWT(jsCookie.get("MementoJWT"))["id"]
-    let url = "https://randomnickname.pythonanywhere.com/memento"
 
     await fetch(url, {
       method: "POST",
@@ -66,7 +66,6 @@
   async function uploadAllNotes(){
     let db_entries = await db.notes.toArray();
     let uid = parseJWT(jsCookie.get("MementoJWT"))["id"]
-    let url = "https://randomnickname.pythonanywhere.com/memento"
 
     await fetch(url, {
       method: "POST",
